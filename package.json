@@ -1,0 +1,28 @@
+{
+  "name": "gulp-yoga",
+  "version": "1.0.0",
+  "description": "simple boilerplate for web sites",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sofia",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^6.1.0",
+    "gulp-iconfont": "^10.0.3",
+    "gulp-imagemin": "^6.0.0",
+    "gulp-notify": "^3.2.0",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-webp": "^4.0.1",
+    "imagemin-pngquant": "^8.0.0"
+  },
+  "dependencies": {
+    "gulp-iconfont-css": "^3.0.0"
+  }
+}

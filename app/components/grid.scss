@@ -1,0 +1,90 @@
+// контейнер по умолчанию. Отступ между колонками
+$colGups: 5px;
+
+// контрольные точки, на которых наш макет будет перестраиваться (могут меняться зависимости от дизайна)
+$breakpoints: (
+  lt: 320px,
+  sm: 375px,
+  xs: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1440px
+);
+
+$columns: 12;
+
+@each $breakpoint in $breakpoints {
+  $name: nth($breakpoint, 1);
+  $size: nth($breakpoint, 2);
+
+  @media only screen and (min-width: $size) {
+    [class*="col-#{$name}"] {
+      box-sizing: border-box;
+      flex: 0 0 auto;
+      padding-right: $colGups;
+      padding-left: $colGups;
+    }
+    @for $i from 1 through $columns {
+      .col-#{$name}-#{$i} {
+        flex-basis: 100% / $columns * $i;
+        max-width: 100% / $columns * $i;
+      }
+    }
+    @for $i from 1 through $columns {
+      .col-#{$name}-offset-#{$i} {
+        margin-left: 100% / $columns * $i;
+      }
+    }
+  }
+}
+
+//===========  mixins start ===========//
+
+// columns
+$columns: 12;
+$col: $columns;
+
+@mixin col($col, $columns) {
+  width: percentage($col/$columns);
+}
+
+//===========  mixins end ===========//
+
+@mixin col-create() {
+  @while $col > 0 {
+    .col-#{$col} {
+      @include col($col, $columns);
+    }
+
+    $col: $col - 1;
+  }
+}
+
+.container {
+  max-width: 1316px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+a {
+  color: inherit;
+}
+
+// layout
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-right: -$colGups;
+  margin-left: -$colGups;
+}
+
+[class^="col"] {
+  width: 100%;
+  min-height: 1px;
+}
+
+
+@include col-create();
