@@ -12,7 +12,7 @@ var iconfontCss = require("gulp-iconfont-css");
 function sync(cb) {
   browserSync.init({
     server: {
-      baseDir: "./build/"
+      baseDir: "./"
     },
     port: 3000
   });
@@ -24,7 +24,7 @@ gulp.task("sync", sync);
 
 function compileStyle(cb) {
   gulp
-    .src("./app/scss/*.scss")
+    .src("./scss/*.scss")
     .pipe(sourcemaps.init())
     .pipe(
       scss({
@@ -44,32 +44,15 @@ function compileStyle(cb) {
       })
     )
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest("./build/css"))
+    .pipe(gulp.dest("./src"))
     .pipe(browserSync.stream());
 
   cb();
 }
 gulp.task("compileStyle", compileStyle);
 
-function buildHtml(cb) {
-  console.log("html");
-  gulp
-    .src("app/**/*.html")
-    .pipe(gulp.dest("build/"))
-    .pipe(browserSync.reload({ stream: true }));
-  cb();
-}
-
-function buildJs(cb) {
-  gulp
-    .src("app/**/*.js")
-    .pipe(gulp.dest("build/"))
-    .pipe(browserSync.reload({ stream: true }));
-  cb();
-}
-
 function imageBuild(cb) {
-  gulp.src("app/img/**/*.*").pipe(
+  gulp.src("./components/img/**/*.*").pipe(
     imagemin({
       progressive: true,
       svgoPlugins: [{ removeViewBox: false }],
@@ -79,8 +62,8 @@ function imageBuild(cb) {
   );
 
   gulp
-    .src("app/img/**/**.*")
-    .pipe(gulp.dest("build/img"))
+    .src("./components/img/**/*.*")
+    .pipe(gulp.dest("./src/img"))
     .pipe(browserSync.reload({ stream: true }));
 
   cb();
@@ -94,13 +77,13 @@ var fontName = "icons";
 function iconBuild(cb) {
  
     gulp
-      .src("app/icons/*.svg")
+      .src("./src/icons/*.svg")
       .pipe(
         iconfontCss({
           // где будет наш scss файл
           targetPath: "../components/icons.scss",
           // пути подлючения шрифтов в _icons.scss
-          fontPath: "app/fonts/",
+          fontPath: "./src/fonts/",
           fontName: fontName
         })
       )
@@ -112,7 +95,7 @@ function iconBuild(cb) {
           fontHeight: 1001
         })
       )
-      .pipe(gulp.dest("app/fonts/"))
+      .pipe(gulp.dest("./src/fonts/"))
       .pipe(browserSync.reload({ stream: true }));
 
   cb();
@@ -121,10 +104,8 @@ function iconBuild(cb) {
 gulp.task("iconBuild", iconBuild);
 
 function watchFiles(cb) {
-  gulp.watch("./**/*.scss", compileStyle);
-  gulp.watch("app/**/*.html", buildHtml);
-  gulp.watch("app/**/*.js", buildJs);
-  gulp.watch("app/icons/*.svg", iconBuild);
+  gulp.watch("./scss/*.scss", compileStyle);
+  gulp.watch("./src/icons/*.svg", iconBuild);
   cb();
 }
 
@@ -134,8 +115,6 @@ function browserReload(cb) {
 }
 
 function build(cb) {
-  buildHtml(cb);
-  buildJs(cb);
   compileStyle(cb);
   imageBuild(cb);
   iconBuild(cb);
